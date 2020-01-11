@@ -1,0 +1,4 @@
+version: "3"
+services:
+  cisco-api:
+    restart: on-failure

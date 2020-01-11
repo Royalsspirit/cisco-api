@@ -1,0 +1,16 @@
+version: "3"
+services:
+  cisco-api:
+    build:
+      context: .
+      dockerfile: ./build/develop/api/Dockerfile
+    environment:
+      PORT: 8080
+      DB: ./database/schema/swapi.dat
+    container_name: dev-cisco-api
+    volumes:
+      - ./:/app/
+    ports:
+      - 8080:8080
+
+
