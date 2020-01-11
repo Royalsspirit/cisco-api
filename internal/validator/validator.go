@@ -20,6 +20,8 @@ func NewValidator() *Val {
 
 	trans, _ := uni.GetTranslator("en")
 
+	v := validator.New()
+
 	err := en_translations.RegisterDefaultTranslations(v, trans)
 
 	if err != nil {
