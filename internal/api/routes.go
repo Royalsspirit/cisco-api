@@ -12,7 +12,7 @@ func (s *Server) Routes() *mux.Router {
 	router.HandleFunc("/health", s.health)
 	router.HandleFunc("/character", s.list).Methods("GET")
 	router.HandleFunc("/character/{id}", s.update).Methods("PUT")
-	router.HandleFunc("/character", s.delete).Methods("DELETE")
+	router.HandleFunc("/character/{id}", s.delete).Methods("DELETE")
 	router.HandleFunc("/character", s.create).Methods("POST")
 
 	return router
