@@ -90,7 +90,7 @@ func peoples(db *sql.DB) ([]People, error) {
 		COALESCE(starships, ''),
 		COALESCE(created, ''),
 		url, 
-		id 
+		COALESCE(id,'') 
 	FROM 
 		people 
 	`
@@ -172,6 +172,7 @@ where
 	return 0, fmt.Errorf("None fields effected")
 
 }
+
 func peopleVehicles(db *sql.DB, people string) ([]vehicle, error) {
 	var vehicleItem vehicle
 
@@ -202,7 +203,6 @@ func peopleVehicles(db *sql.DB, people string) ([]vehicle, error) {
 		vehicles = append(vehicles, vehicleItem)
 	}
 
-	fmt.Println("vehicle", vehicles)
 	return vehicles, nil
 }
 
@@ -328,6 +328,81 @@ func PeopleUpdateHandler(db *sql.DB, value People, id string) error {
 
 		if speciesInsertErr != nil {
 			return speciesInsertErr
+		}
+	}
+
+	return nil
+}
+
+//InsertPeople InsertPeople
+func InsertPeople(db *sql.DB, value People) error {
+	sqlPeople := `INSERT INTO people(name, height, mass, hair_color, skin_color, eye_color, birth_year, gender, Homeworld, films, starships, created, url) 
+	values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	result, err := db.ExecContext(context.Background(),
+		sqlPeople,
+		value.Name,
+		value.Height,
+		value.Mass,
+		value.HairColor,
+		value.SkinColor,
+		value.EyeColor,
+		value.BirthYear,
+		value.Gender,
+		value.Homeworld,
+		value.Films,
+		value.Starships,
+		value.Created,
+		value.URL)
+
+	if err != nil {
+		return err
+	}
+	id, err := result.RowsAffected()
+
+	if err == nil {
+		for _, vehicle := range value.Vehicles {
+
+			_, vehicleInsertErr := insertPeopleVehicles(db, vehicle.ID, string(id))
+
+			if vehicleInsertErr != nil {
+				return vehicleInsertErr
+			}
+		}
+
+		for _, specy := range value.Species {
+
+			_, speciesInsertErr := insertPeopleSpecies(db, specy.ID, string(id))
+
+			if speciesInsertErr != nil {
+				return speciesInsertErr
+			}
+		}
+	}
+
+	return err
+
+}
+
+//DeletePeople InsertPeople
+func DeletePeople(db *sql.DB, id string) error {
+	sqlPeople := `DELETE FROM people WHERE id = $1`
+
+	result, err := db.ExecContext(context.Background(), sqlPeople, id)
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+
+	if rows > 0 {
+		_, vehicleDelErr := deletePeopleVehicles(db, id)
+		if vehicleDelErr != nil {
+			return vehicleDelErr
+		}
+
+		_, speciesDelErr := deletePeopleSpecies(db, id)
+		if speciesDelErr != nil {
+			return speciesDelErr
 		}
 	}
 
