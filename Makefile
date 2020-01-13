@@ -21,6 +21,8 @@ GREEN    = \033[32m
 RED      = \033[31m
 WHITE    = \033[37m
 
+DB		 = ./database/schema/swapi.dat
+
 
 .PHONY: up build logs ps clean fclean help unit-tests integration-tests lint stop
 
@@ -56,7 +58,7 @@ lint: base-image
 	docker run --rm cisco/base-golang bash -c 'go get -u golang.org/x/lint/golint && golint -set_exit_status ./... && go vet ./...'
 
 unit-tests: base-image
-	docker run --rm cisco/base-golang bash -c 'go test -v ./...'
+	docker run -e DB=${DB} --rm cisco/base-golang bash -c 'go test -v ./...'
 stop:
 	@echo "$(BLUE)[$@]$(EOC): Stop containers"
 	docker-compose -f docker-compose.yml -f build/${ENV}/docker-compose.yml stop ${c}
