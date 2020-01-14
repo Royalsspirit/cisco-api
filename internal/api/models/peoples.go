@@ -19,21 +19,21 @@ type specie struct {
 
 // People a main field to return as responses
 type People struct {
-	Name      string `validate:"max=50,min=2"`
-	Height    string `validate:"max=50,min=2"`
-	Mass      string `validate:"max=50,min=2"`
-	HairColor string `validate:"max=50,min=2"`
-	SkinColor string `validate:"max=50,min=2"`
-	EyeColor  string `validate:"max=50,min=2"`
-	BirthYear string `validate:"max=50,min=2"`
-	Gender    string `validate:"max=50,min=2"`
-	Homeworld string `validate:"min=1"`
+	Name      string `validate:"required,max=50,min=2"`
+	Height    string `validate:"required,max=50,min=2"`
+	Mass      string `validate:"required,max=50,min=2"`
+	HairColor string `validate:"required,max=50,min=2"`
+	SkinColor string `validate:"required,max=50,min=2"`
+	EyeColor  string `validate:"required,max=50,min=2"`
+	BirthYear string `validate:"required,max=50,min=2"`
+	Gender    string `validate:"required,max=50,min=2"`
+	Homeworld string `validate:"required,min=1"`
 	Films     string
 	Vehicles  []vehicle
 	Species   []specie
 	Starships string
-	Created   string `validate:"max=50,min=2"`
-	URL       string `validate:"min=1"`
+	Created   string `validate:"required,max=50,min=2"`
+	URL       string `validate:"required,min=1"`
 	ID        string `json:"omitempty"`
 }
 
