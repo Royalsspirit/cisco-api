@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/Royalsspirit/cisco-api/internal/api/models"
@@ -53,7 +52,6 @@ func (s *Server) update(w http.ResponseWriter, r *http.Request) {
 	if validateErr != nil {
 
 		errors := util.BuildErrorsFromValidationErrors(validateErr.(validator.ValidationErrors), &trans)
-
 		util.ResponseErrors(w, errors, http.StatusBadRequest)
 		return
 	}
@@ -97,7 +95,6 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	err = models.InsertPeople(s.DB, input)
 
 	if err != nil {
-		fmt.Println("err", err)
 		util.ResponseError(w, "Internal error", http.StatusInternalServerError)
 		return
 	}
@@ -111,7 +108,6 @@ func (s *Server) delete(w http.ResponseWriter, r *http.Request) {
 	err := models.DeletePeople(s.DB, vars["id"])
 
 	if err != nil {
-		fmt.Println("err", err)
 		util.ResponseError(w, "Internal error", http.StatusInternalServerError)
 		return
 	}
