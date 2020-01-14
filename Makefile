@@ -22,16 +22,17 @@ RED      = \033[31m
 WHITE    = \033[37m
 
 DB		 = ./database/schema/swapi.dat
+DEFAULT_DB = ./database/schema/swapi.dat.backup
 
 
-.PHONY: up build logs ps clean fclean help unit-tests integration-tests lint stop
+.PHONY: up build logs ps clean fclean help unit-tests lint stop reset-db
 
 help:
 	@echo "$(GREEN)[$@]$(EOC): up                - Run development or production environment (default: develop)"
 	@echo "$(GREEN)[$@]$(EOC): logs              - Print logs container. You can add the c=service_name option to view the specific log of a container."
 	@echo "$(GREEN)[$@]$(EOC): ps                - List containers"
 	@echo "$(GREEN)[$@]$(EOC): unit-tests        - Run unit tests"
-	@echo "$(GREEN)[$@]$(EOC): integration-tests - Run integration tests"
+	@echo "$(GREEN)[$@]$(EOC): reset-db 		 - Reset current database"
 	@echo "$(GREEN)[$@]$(EOC): clean             - Stop and remove containers"
 	@echo "$(GREEN)[$@]$(EOC): fclean            - Stop and remove containers/volumes"
 	@echo "$(GREEN)[$@]$(EOC): help              - Print this help"
@@ -59,6 +60,8 @@ lint: base-image
 
 unit-tests: base-image
 	docker run -e DB=${DB} --rm cisco/base-golang bash -c 'go test -v ./...'
+reset-db:
+	cp ${DEFAULT_DB} ${DB}
 stop:
 	@echo "$(BLUE)[$@]$(EOC): Stop containers"
 	docker-compose -f docker-compose.yml -f build/${ENV}/docker-compose.yml stop ${c}
