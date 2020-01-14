@@ -12,7 +12,15 @@ import (
 func main() {
 	serverName := "cisco-api"
 	// Init database
-	db := database.NewDB(os.Getenv("DB"))
+	var dbfile string
+
+	if os.Getenv("DB") == "" {
+		dbfile = "./database/schema/swapi.dat"
+	} else {
+		dbfile = os.Getenv("DB")
+	}
+
+	db := database.NewDB(dbfile)
 
 	// Init logger
 	logger := logger.NewLogger(&logger.Config{
