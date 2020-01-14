@@ -13,33 +13,46 @@ Before starting make sure you have below packages installed:
 - go version go1.13.1 linux/amd64
 Optional:
 - Docker version 18.09.7
-
-#### Linux
-
-TODO
-
-#### Windows
-
-TODO
-
-#### Mac
-
-TODO
-
+- GNU Make 4.1
+  
 ### Installing
 
-First, make sure your gitlab profil have a ssh key to allow `clone`
+First, make sure your github profil have a ssh key to allow `clone`
 
 ```
+git clone git@github.com:Royalsspirit/cisco-api.git
 ```
 
-You will find below a step by step series of examples that tell you how to get a development env running.
+This repository is made to run in containers but the classic way is still available. Just follow corresponding section
 
+#### Makefile and docker
+
+Make sure that requirements are satisfied.
+
+To run the api, just type:
+- `make up`
+
+it will expose api server at port `8080`.
+
+#### Just with go
+
+- Just run: `go run cmd/api/main.go`. 
+  
+If you want to use other db than the db available in repository you could add a environnement variable in the previous command:
+- `DB=PAHT_TO_DBFILE go run cmd/api/main.go`
+
+#### Endpoints
+
+There are 4 endpoints available:
+
+- `GET /character` to get list of people with their vehicles and species
+- `PUT /character/{id}` to update a people properties
+- `DELETE /character/{id}` to delete a people identified by his id
+- `POST /character` to create a people
+  
 ## Running the tests
 
-TODO
-
-## Deployment
+`- make unit-tests`
 
 ## Built With
 
