@@ -43,10 +43,10 @@ If you want to use other db than the db available in repository you could add a 
 
 #### Endpoints
 
-There are 4 endpoints available:
+There are 4 available endpoints:
 
 - `GET /character` to get list of people with their vehicles and species
-- `PUT /character/{id}` to update a people properties
+- `PUT /character/{id}` to update a people properties (send one of object returned by the previous endpoint)
 - `DELETE /character/{id}` to delete a people identified by his id
 - `POST /character` to create a people
   
